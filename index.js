@@ -26,6 +26,8 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     const createAssignmentCollection = client.db('createAssignmentDB').collection('createAssignment');
+    const createSubmissionCollection = client.db('createSubmissionDB').collection('createSubmission');
+
 
     // createAssignment related apis
     app.get('/createAssignment', async (req, res) => {
@@ -64,6 +66,20 @@ async function run() {
       const id = req.params.id;
       const query = {_id: new ObjectId(id)}
       const result = await createAssignmentCollection.deleteOne(query);
+      res.send(result);
+    })
+
+     // createSubmission related apis
+    //  app.get('/createAssignment', async (req, res) => {
+    //   const cursor = createAssignmentCollection.find();
+    //   const result = await cursor.toArray();
+    //   res.send(result);
+    // })
+
+    app.post('/createSubmission', async (req, res) => {
+      const newSubmission = req.body;
+      console.log(newSubmission);
+      const result = await createSubmissionCollection.insertOne(newSubmission);
       res.send(result);
     })
 
