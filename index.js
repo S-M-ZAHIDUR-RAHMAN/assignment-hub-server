@@ -70,11 +70,11 @@ async function run() {
     })
 
      // createSubmission related apis
-    //  app.get('/createAssignment', async (req, res) => {
-    //   const cursor = createAssignmentCollection.find();
-    //   const result = await cursor.toArray();
-    //   res.send(result);
-    // })
+     app.get('/createSubmission', async (req, res) => {
+      const cursor = createSubmissionCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    })
 
     app.post('/createSubmission', async (req, res) => {
       const newSubmission = req.body;
