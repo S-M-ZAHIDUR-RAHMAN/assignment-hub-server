@@ -24,9 +24,14 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
     const createAssignmentCollection = client.db('createAssignmentDB').collection('createAssignment');
     const createSubmissionCollection = client.db('createSubmissionDB').collection('createSubmission');
+    const createFeatureCollection = client.db('featureDB').collection('feature');
+  
+
+  
+
 
 
     // createAssignment related apis
@@ -42,19 +47,19 @@ async function run() {
       const result = await createAssignmentCollection.insertOne(newAssignment);
       res.send(result);
     })
-    app.put('/createAssignment/:id', async(req, res)=>{
+    app.put('/createAssignment/:id', async (req, res) => {
       const id = req.params.id;
-      const filter = {_id: new ObjectId(id)};
-      const options = {upsert: true};
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
       const updatedAssignment = req.body;
       const assignment = {
         $set: {
-          title: updatedAssignment.title, 
-          marks: updatedAssignment.marks, 
-          description: updatedAssignment.description, 
-          difficultyLevel: updatedAssignment.difficultyLevel, 
-          imageURL: updatedAssignment.imageURL, 
-          startDate: updatedAssignment.startDate, 
+          title: updatedAssignment.title,
+          marks: updatedAssignment.marks,
+          description: updatedAssignment.description,
+          difficultyLevel: updatedAssignment.difficultyLevel,
+          imageURL: updatedAssignment.imageURL,
+          startDate: updatedAssignment.startDate,
           userName: updatedAssignment.userName
         }
       }
@@ -62,15 +67,15 @@ async function run() {
       res.send(result);
     })
 
-    app.delete('/createAssignment/:id', async(req, res)=>{
+    app.delete('/createAssignment/:id', async (req, res) => {
       const id = req.params.id;
-      const query = {_id: new ObjectId(id)}
+      const query = { _id: new ObjectId(id) }
       const result = await createAssignmentCollection.deleteOne(query);
       res.send(result);
     })
 
-     // createSubmission related apis
-     app.get('/createSubmission', async (req, res) => {
+    // createSubmission related apis
+    app.get('/createSubmission', async (req, res) => {
       const cursor = createSubmissionCollection.find();
       const result = await cursor.toArray();
       res.send(result);
@@ -83,9 +88,9 @@ async function run() {
       res.send(result);
     })
 
-    app.patch('/createSubmission/:id', async(req, res)=>{
+    app.patch('/createSubmission/:id', async (req, res) => {
       const id = req.params.id;
-      const filter = {_id: id};
+      const filter = { _id: id };
       const newMark = req.body;
       const newAssignmentMark = {
         $set: {
@@ -96,22 +101,27 @@ async function run() {
       res.send(result);
     })
 
-    app.put('/createSubmission/:id', async(req, res)=>{
+    app.put('/createSubmission/:id', async (req, res) => {
       const id = req.params.id;
-      const filter = {_id: id};
-      const options = {upsert: true};
+      const filter = { _id: id };
+      const options = { upsert: true };
       const newMark = req.body;
       const newAssignmentAdded = {
         $set: {
-          marking: newMark.marking, 
-          feedback: newMark.feedback, 
+          marking: newMark.marking,
+          feedback: newMark.feedback,
         }
       }
       const result = await createSubmissionCollection.updateOne(filter, newAssignmentAdded, options);
       res.send(result);
     })
 
-
+    //Feature related APIs
+    app.get('/feature', async (req, res) => {
+      const cursor = createFeatureCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    })
 
 
 
