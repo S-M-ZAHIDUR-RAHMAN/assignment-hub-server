@@ -83,6 +83,34 @@ async function run() {
       res.send(result);
     })
 
+    app.patch('/createSubmission/:id', async(req, res)=>{
+      const id = req.params.id;
+      const filter = {_id: id};
+      const newMark = req.body;
+      const newAssignmentMark = {
+        $set: {
+          status: newMark.status
+        },
+      };
+      const result = await createSubmissionCollection.updateOne(filter, newAssignmentMark);
+      res.send(result);
+    })
+
+    app.put('/createSubmission/:id', async(req, res)=>{
+      const id = req.params.id;
+      const filter = {_id: id};
+      const options = {upsert: true};
+      const newMark = req.body;
+      const newAssignmentAdded = {
+        $set: {
+          marking: newMark.marking, 
+          feedback: newMark.feedback, 
+        }
+      }
+      const result = await createSubmissionCollection.updateOne(filter, newAssignmentAdded, options);
+      res.send(result);
+    })
+
 
 
 
