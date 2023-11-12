@@ -6,7 +6,12 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 //middleware
-app.use(cors());
+app.use(
+  cors({
+      origin: ['http://localhost:5173', 'https://react-assignment-hub.web.app'],
+      credentials: true,
+  }),
+)
 app.use(express.json());
 
 
@@ -29,9 +34,6 @@ async function run() {
     const createSubmissionCollection = client.db('createSubmissionDB').collection('createSubmission');
     const createFeatureCollection = client.db('featureDB').collection('feature');
   
-
-  
-
 
 
     // createAssignment related apis
